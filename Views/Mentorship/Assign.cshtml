@@ -1,0 +1,30 @@
+@model MentorshipAssignViewModel
+@{ ViewData["Title"] = "Assign Mentors"; }
+
+<h2>Assign a Mentor to a Mentee</h2>
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+<form asp-action="Assign" method="post" class="col-md-6">
+    <div class="mb-3">
+        <label class="form-label">Mentor (Lecturer)</label>
+        <select asp-for="MentorId" class="form-select">
+            @foreach (var m in Model.Mentors)
+            {
+                <option value="@m.Id">@m.Name</option>
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Mentee (Student)</label>
+        <select asp-for="MenteeId" class="form-select">
+            @foreach (var m in Model.Mentees)
+            {
+                <option value="@m.Id">@m.Name</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Pairing</button>
+</form>

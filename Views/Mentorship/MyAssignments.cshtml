@@ -1,0 +1,34 @@
+@model List<MentorshipAssignment>
+@{ ViewData["Title"] = "Mentorship"; }
+
+<h2>Your Mentorship Pairings</h2>
+
+@if (!Model.Any())
+{
+    <p>No mentorship pairing yet. An administrator will assign one.</p>
+}
+
+@foreach (var assignment in Model)
+{
+    <div class="card mb-3 p-3">
+        <p><strong>Mentor:</strong> @assignment.Mentor?.FullName &nbsp; <strong>Mentee:</strong> @assignment.Mentee?.FullName</p>
+
+        @if (assignment.Sessions.Any())
+        {
+            <ul>
+                @foreach (var s in assignment.Sessions.OrderByDescending(s => s.SessionDate))
+                {
+                    <li>@s.SessionDate.ToString("MMM d, yyyy") — @s.WellnessDimension: @s.Notes</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p><em>No sessions recorded yet.</em></p>
+        }
+
+        <a asp-action="CreateSession" asp-route-mentorshipAssignmentId="@assignment.Id" class="btn btn-sm btn-outline-primary" style="width:fit-content">
+            Record New Session
+        </a>
+    </div>
+}

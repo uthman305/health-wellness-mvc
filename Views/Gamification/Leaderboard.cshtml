@@ -1,0 +1,35 @@
+@model List<LeaderboardRowViewModel>
+@{ ViewData["Title"] = "Leaderboard"; }
+
+<h2>Leaderboard</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr><th>Rank</th><th>Name</th><th>Points</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var row in Model)
+        {
+            <tr>
+                <td>@row.Rank</td>
+                <td>@row.FullName</td>
+                <td>@row.Total</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    int page = (int)ViewBag.Page;
+    int totalPages = (int)ViewBag.TotalPages;
+}
+<nav>
+    <ul class="pagination">
+        @for (int p = 1; p <= totalPages; p++)
+        {
+            <li class="page-item @(p == page ? "active" : "")">
+                <a class="page-link" asp-action="Leaderboard" asp-route-page="@p">@p</a>
+            </li>
+        }
+    </ul>
+</nav>

@@ -1,0 +1,37 @@
+@model AdminDashboardViewModel
+@{ ViewData["Title"] = "Admin Dashboard"; }
+
+<h2>Institution Wellness Overview</h2>
+<p class="text-muted">Aggregate, anonymised data only — no individual user records shown.</p>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="card p-3 text-center"><h6>Total Users</h6><h3>@Model.TotalUsers</h3></div></div>
+    <div class="col-md-3"><div class="card p-3 text-center"><h6>Students</h6><h3>@Model.TotalStudents</h3></div></div>
+    <div class="col-md-3"><div class="card p-3 text-center"><h6>Lecturers</h6><h3>@Model.TotalLecturers</h3></div></div>
+    <div class="col-md-3"><div class="card p-3 text-center"><h6>Active Today</h6><h3>@Model.DailyActiveUsers</h3></div></div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4"><div class="card p-3 text-center"><h6>Avg. Stress</h6><h3>@Model.AverageStress.ToString("0.0")</h3></div></div>
+    <div class="col-md-4"><div class="card p-3 text-center"><h6>Avg. Fatigue</h6><h3>@Model.AverageFatigue.ToString("0.0")</h3></div></div>
+    <div class="col-md-4"><div class="card p-3 text-center"><h6>Avg. Mental Health</h6><h3>@Model.AverageMentalScore.ToString("0.0")</h3></div></div>
+</div>
+
+<h4>BMI Distribution</h4>
+<canvas id="bmiChart" height="80"></canvas>
+
+@section Scripts {
+    <script>
+        new Chart(document.getElementById('bmiChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Underweight', 'Normal', 'Overweight', 'Obese'],
+                datasets: [{
+                    label: 'Users',
+                    data: [@Model.UnderweightCount, @Model.NormalCount, @Model.OverweightCount, @Model.ObeseCount],
+                    backgroundColor: ['#0dcaf0', '#198754', '#fd7e14', '#dc3545']
+                }]
+            }
+        });
+    </script>
+}

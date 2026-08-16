@@ -1,0 +1,32 @@
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="p-5 mb-4 bg-light rounded-3">
+    <h1 class="display-6">Health &amp; Wellness Monitoring System</h1>
+    <p class="lead">
+        A single platform for Federal Polytechnic, Ilaro (FPI) students and lecturers to track
+        stress, fatigue, physical activity, mental health, and BMI — with gamification and
+        mentorship support built in.
+    </p>
+    @if (User.Identity == null || !User.Identity.IsAuthenticated)
+    {
+        <a class="btn btn-primary btn-lg me-2" asp-controller="Account" asp-action="Register">Get Started</a>
+        <a class="btn btn-outline-primary btn-lg" asp-controller="Account" asp-action="Login">Login</a>
+    }
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <h5>Track 5 Wellness Indicators</h5>
+        <p>Stress, fatigue, physical activity, mental health, and BMI — all in one log.</p>
+    </div>
+    <div class="col-md-4">
+        <h5>Stay Motivated</h5>
+        <p>Earn points and badges, and see how you rank on the institution leaderboard.</p>
+    </div>
+    <div class="col-md-4">
+        <h5>Mentorship Support</h5>
+        <p>Students and lecturers connect through structured wellness card sessions.</p>
+    </div>
+</div>

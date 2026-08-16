@@ -1,0 +1,82 @@
+@model DashboardViewModel
+@{ ViewData["Title"] = "Dashboard"; }
+
+<h2>Welcome, @Model.FullName</h2>
+
+@if (TempData["BmiResult"] != null)
+{
+    <div class="alert alert-info">Latest BMI: @TempData["BmiResult"]</div>
+}
+@if (TempData["NewBadges"] != null)
+{
+    <div class="alert alert-success">New badge(s) earned: @TempData["NewBadges"]</div>
+}
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h6>Points</h6>
+            <h3>@Model.TotalPoints</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h6>Badges Earned</h6>
+            <h3>@Model.Badges.Count</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h6>Latest BMI</h6>
+            <h3>@(Model.LatestBmi != null ? Model.LatestBmi.Bmi.ToString("0.0") : "—")</h3>
+            <small>@(Model.LatestBmi?.Category ?? "No entries yet")</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h6>Total Logs</h6>
+            <h3>@Model.RecentLogs.Count</h3>
+        </div>
+    </div>
+</div>
+
+@if (Model.Badges.Any())
+{
+    <p><strong>Your badges:</strong> @string.Join(", ", Model.Badges)</p>
+}
+
+@if (Model.RecentLogs.Count < 2)
+{
+    <div class="alert alert-warning">Log your wellness at least twice to see your trend chart.</div>
+}
+else
+{
+    <canvas id="trendChart" height="100"></canvas>
+}
+
+<p class="mt-4"><a asp-action="Log" class="btn btn-primary">Log Wellness Now</a></p>
+
+@section Scripts {
+    @if (Model.RecentLogs.Count >= 2)
+    {
+        <script>
+            const labels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.RecentLogs.Select(l => l.CreatedAt.ToString("MMM d"))));
+            const stress = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.RecentLogs.Select(l => l.StressScore)));
+            const fatigue = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.RecentLogs.Select(l => l.FatigueScore)));
+            const mental = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.RecentLogs.Select(l => l.MentalScore)));
+
+            new Chart(document.getElementById('trendChart'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Stress', data: stress, borderColor: '#dc3545' },
+                        { label: 'Fatigue', data: fatigue, borderColor: '#fd7e14' },
+                        { label: 'Mental Health', data: mental, borderColor: '#198754' }
+                    ]
+                },
+                options: { scales: { y: { min: 0, max: 10 } } }
+            });
+        </script>
+    }
+}
