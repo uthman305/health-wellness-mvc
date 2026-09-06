@@ -1,34 +1,52 @@
 @model List<MentorshipAssignment>
 @{ ViewData["Title"] = "Mentorship"; }
 
-<h2>Your Mentorship Pairings</h2>
+<h1 class="text-2xl font-semibold tracking-tight text-on-surface mb-1">Your Mentorship Pairings</h1>
+<p class="text-sm text-on-surface-variant mb-6">Sessions and pairings you're part of.</p>
 
 @if (!Model.Any())
 {
-    <p>No mentorship pairing yet. An administrator will assign one.</p>
-}
-
-@foreach (var assignment in Model)
-{
-    <div class="card mb-3 p-3">
-        <p><strong>Mentor:</strong> @assignment.Mentor?.FullName &nbsp; <strong>Mentee:</strong> @assignment.Mentee?.FullName</p>
-
-        @if (assignment.Sessions.Any())
-        {
-            <ul>
-                @foreach (var s in assignment.Sessions.OrderByDescending(s => s.SessionDate))
-                {
-                    <li>@s.SessionDate.ToString("MMM d, yyyy") — @s.WellnessDimension: @s.Notes</li>
-                }
-            </ul>
-        }
-        else
-        {
-            <p><em>No sessions recorded yet.</em></p>
-        }
-
-        <a asp-action="CreateSession" asp-route-mentorshipAssignmentId="@assignment.Id" class="btn btn-sm btn-outline-primary" style="width:fit-content">
-            Record New Session
-        </a>
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-6 text-center text-sm text-on-surface-variant">
+        No mentorship pairing yet. An administrator will assign one.
     </div>
 }
+
+<div class="flex flex-col gap-4">
+    @foreach (var assignment in Model)
+    {
+        <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-5">
+            <div class="flex items-center gap-2 mb-3 text-sm">
+                <span class="material-symbols-outlined text-[18px] text-primary">diversity_2</span>
+                <span class="font-medium text-on-surface">@assignment.Mentor?.FullName</span>
+                <span class="text-on-surface-variant">↔</span>
+                <span class="font-medium text-on-surface">@assignment.Mentee?.FullName</span>
+            </div>
+
+            @if (assignment.Sessions.Any())
+            {
+                <div class="flex flex-col gap-2 mb-3">
+                    @foreach (var s in assignment.Sessions.OrderByDescending(s => s.SessionDate))
+                    {
+                        <div class="bg-surface-container-low rounded-lg px-3.5 py-2.5 text-sm">
+                            <p class="font-medium text-on-surface">@s.WellnessDimension <span class="text-xs font-normal text-on-surface-variant">· @s.SessionDate.ToString("MMM d, yyyy")</span></p>
+                            @if (!string.IsNullOrWhiteSpace(s.Notes))
+                            {
+                                <p class="text-on-surface-variant text-xs mt-0.5">@s.Notes</p>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-xs text-on-surface-variant italic mb-3">No sessions recorded yet.</p>
+            }
+
+            <a asp-action="CreateSession" asp-route-mentorshipAssignmentId="@assignment.Id"
+               class="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline">
+                <span class="material-symbols-outlined text-[16px]">add</span>
+                Record New Session
+            </a>
+        </div>
+    }
+</div>

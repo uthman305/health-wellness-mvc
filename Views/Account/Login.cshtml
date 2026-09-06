@@ -1,17 +1,44 @@
 @model LoginViewModel
-@{ ViewData["Title"] = "Login"; }
+@{ ViewData["Title"] = "Login"; Layout = "_Layout"; }
 
-<h2>Login</h2>
-<div asp-validation-summary="All" class="text-danger"></div>
+<div class="w-full max-w-[390px] mx-auto flex flex-col justify-center py-8">
+    <div class="flex flex-col items-center mb-8">
+        <div class="w-9 h-9 rounded-xl bg-primary flex items-center justify-center text-white mb-4">
+            <span class="material-symbols-outlined text-[20px]">favorite</span>
+        </div>
+        <h1 class="text-[28px] font-semibold tracking-tight text-on-surface mb-2 text-center">Welcome back</h1>
+        <p class="text-sm text-on-surface-variant text-center max-w-[280px]">Log in to manage your campus wellness journey</p>
+    </div>
 
-<form asp-action="Login" method="post" class="col-md-6">
-    <div class="mb-3">
-        <label asp-for="Email" class="form-label"></label>
-        <input asp-for="Email" class="form-control" />
+    <div asp-validation-summary="All" class="text-error text-sm mb-4"></div>
+
+    <form asp-action="Login" method="post" class="flex flex-col gap-4">
+        <div class="flex flex-col gap-1.5">
+            <label asp-for="Email" class="text-xs font-medium text-on-surface"></label>
+            <div class="relative">
+                <span class="material-symbols-outlined text-[20px] text-outline absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">mail</span>
+                <input asp-for="Email" placeholder="name@campus.edu" class="w-full h-12 pl-10 pr-3.5 bg-surface-container-lowest border border-outline-variant rounded-xl text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition shadow-sm" />
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+            <label asp-for="Password" class="text-xs font-medium text-on-surface"></label>
+            <div class="relative">
+                <span class="material-symbols-outlined text-[20px] text-outline absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">lock</span>
+                <input asp-for="Password" placeholder="••••••••" class="w-full h-12 pl-10 pr-3.5 bg-surface-container-lowest border border-outline-variant rounded-xl text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition shadow-sm" />
+            </div>
+        </div>
+
+        <button type="submit" class="w-full h-12 mt-2 bg-primary text-on-primary text-sm font-semibold rounded-xl hover:opacity-90 transition shadow-sm flex items-center justify-center gap-2 active:scale-[0.99]">
+            <span>Sign in</span>
+            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+        </button>
+    </form>
+
+    <div class="text-center mt-6">
+        <p class="text-sm text-on-surface-variant">
+            Don't have an account?
+            <a asp-action="Register" class="text-primary font-semibold hover:underline underline-offset-2 ml-1">Create account</a>
+        </p>
     </div>
-    <div class="mb-3">
-        <label asp-for="Password" class="form-label"></label>
-        <input asp-for="Password" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-primary">Login</button>
-</form>
+</div>

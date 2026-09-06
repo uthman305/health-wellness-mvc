@@ -1,35 +1,32 @@
 @model List<LeaderboardRowViewModel>
 @{ ViewData["Title"] = "Leaderboard"; }
 
-<h2>Leaderboard</h2>
+<h1 class="text-2xl font-semibold tracking-tight text-on-surface mb-1">Leaderboard</h1>
+<p class="text-sm text-on-surface-variant mb-6">Institution-wide ranking by wellness points.</p>
 
-<table class="table table-striped">
-    <thead>
-        <tr><th>Rank</th><th>Name</th><th>Points</th></tr>
-    </thead>
-    <tbody>
-        @foreach (var row in Model)
-        {
-            <tr>
-                <td>@row.Rank</td>
-                <td>@row.FullName</td>
-                <td>@row.Total</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg divide-y divide-outline-variant/60 overflow-hidden">
+    @foreach (var row in Model)
+    {
+        <div class="flex items-center gap-4 px-5 py-3.5">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold shrink-0 @(row.Rank <= 3 ? "bg-primary text-on-primary" : "bg-surface-container text-on-surface-variant")">
+                @row.Rank
+            </div>
+            <p class="flex-1 text-sm font-medium text-on-surface">@row.FullName</p>
+            <p class="text-sm font-semibold text-primary">@row.Total pts</p>
+        </div>
+    }
+</div>
 
 @{
     int page = (int)ViewBag.Page;
     int totalPages = (int)ViewBag.TotalPages;
 }
-<nav>
-    <ul class="pagination">
-        @for (int p = 1; p <= totalPages; p++)
-        {
-            <li class="page-item @(p == page ? "active" : "")">
-                <a class="page-link" asp-action="Leaderboard" asp-route-page="@p">@p</a>
-            </li>
-        }
-    </ul>
-</nav>
+<div class="flex justify-center gap-1.5 mt-5">
+    @for (int p = 1; p <= totalPages; p++)
+    {
+        <a asp-action="Leaderboard" asp-route-page="@p"
+           class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-medium @(p == page ? "bg-primary text-on-primary" : "bg-surface-container-lowest border border-outline-variant text-on-surface-variant")">
+            @p
+        </a>
+    }
+</div>

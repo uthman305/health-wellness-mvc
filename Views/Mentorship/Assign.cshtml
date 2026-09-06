@@ -1,30 +1,36 @@
 @model MentorshipAssignViewModel
 @{ ViewData["Title"] = "Assign Mentors"; }
 
-<h2>Assign a Mentor to a Mentee</h2>
+<h1 class="text-2xl font-semibold tracking-tight text-on-surface mb-1">Assign a Mentor</h1>
+<p class="text-sm text-on-surface-variant mb-6">Pair a lecturer with a student.</p>
+
 @if (TempData["Message"] != null)
 {
-    <div class="alert alert-success">@TempData["Message"]</div>
+    <div class="bg-secondary-container/40 border border-secondary/30 text-on-secondary-container text-sm rounded-lg px-4 py-3 mb-4">
+        @TempData["Message"]
+    </div>
 }
 
-<form asp-action="Assign" method="post" class="col-md-6">
-    <div class="mb-3">
-        <label class="form-label">Mentor (Lecturer)</label>
-        <select asp-for="MentorId" class="form-select">
+<form asp-action="Assign" method="post" class="bg-surface-container-lowest border border-outline-variant rounded-lg p-6 flex flex-col gap-4">
+    <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-medium text-on-surface">Mentor (Lecturer)</label>
+        <select asp-for="MentorId" class="w-full h-12 px-3.5 bg-surface-container-low border border-outline-variant rounded-xl text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20">
             @foreach (var m in Model.Mentors)
             {
                 <option value="@m.Id">@m.Name</option>
             }
         </select>
     </div>
-    <div class="mb-3">
-        <label class="form-label">Mentee (Student)</label>
-        <select asp-for="MenteeId" class="form-select">
+    <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-medium text-on-surface">Mentee (Student)</label>
+        <select asp-for="MenteeId" class="w-full h-12 px-3.5 bg-surface-container-low border border-outline-variant rounded-xl text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20">
             @foreach (var m in Model.Mentees)
             {
                 <option value="@m.Id">@m.Name</option>
             }
         </select>
     </div>
-    <button type="submit" class="btn btn-primary">Create Pairing</button>
+    <button type="submit" class="w-full h-12 mt-2 bg-primary text-on-primary text-sm font-semibold rounded-xl hover:opacity-90 transition">
+        Create Pairing
+    </button>
 </form>

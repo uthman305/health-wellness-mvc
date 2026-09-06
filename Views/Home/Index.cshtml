@@ -1,32 +1,36 @@
-@{
-    ViewData["Title"] = "Home";
-}
+@{ ViewData["Title"] = "Home"; }
 
-<div class="p-5 mb-4 bg-light rounded-3">
-    <h1 class="display-6">Health &amp; Wellness Monitoring System</h1>
-    <p class="lead">
-        A single platform for Federal Polytechnic, Ilaro (FPI) students and lecturers to track
-        stress, fatigue, physical activity, mental health, and BMI — with gamification and
-        mentorship support built in.
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-8 mb-6 text-center">
+    <div class="w-12 h-12 rounded-xl bg-primary flex items-center justify-center text-white mx-auto mb-4">
+        <span class="material-symbols-outlined text-[24px]">favorite</span>
+    </div>
+    <h1 class="text-[28px] font-semibold tracking-tight text-on-surface mb-2">Health &amp; Wellness Monitoring</h1>
+    <p class="text-sm text-on-surface-variant max-w-md mx-auto mb-6">
+        Track stress, fatigue, physical activity, mental health, and BMI — with gamification and mentorship built in for FPI students and lecturers.
     </p>
     @if (User.Identity == null || !User.Identity.IsAuthenticated)
     {
-        <a class="btn btn-primary btn-lg me-2" asp-controller="Account" asp-action="Register">Get Started</a>
-        <a class="btn btn-outline-primary btn-lg" asp-controller="Account" asp-action="Login">Login</a>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center max-w-xs mx-auto">
+            <a asp-controller="Account" asp-action="Register" class="h-12 px-6 bg-primary text-on-primary text-sm font-semibold rounded-xl flex items-center justify-center hover:opacity-90 transition">Get Started</a>
+            <a asp-controller="Account" asp-action="Login" class="h-12 px-6 border border-outline-variant text-on-surface text-sm font-semibold rounded-xl flex items-center justify-center hover:bg-surface-container-low transition">Login</a>
+        </div>
     }
 </div>
 
-<div class="row g-4">
-    <div class="col-md-4">
-        <h5>Track 5 Wellness Indicators</h5>
-        <p>Stress, fatigue, physical activity, mental health, and BMI — all in one log.</p>
+<div class="grid sm:grid-cols-3 gap-4">
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-5">
+        <span class="material-symbols-outlined text-primary text-[22px]">monitoring</span>
+        <h3 class="text-sm font-semibold text-on-surface mt-2 mb-1">5 Wellness Indicators</h3>
+        <p class="text-xs text-on-surface-variant">Stress, fatigue, activity, mental health, and BMI — all in one daily check-in.</p>
     </div>
-    <div class="col-md-4">
-        <h5>Stay Motivated</h5>
-        <p>Earn points and badges, and see how you rank on the institution leaderboard.</p>
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-5">
+        <span class="material-symbols-outlined text-secondary text-[22px]">emoji_events</span>
+        <h3 class="text-sm font-semibold text-on-surface mt-2 mb-1">Stay Motivated</h3>
+        <p class="text-xs text-on-surface-variant">Earn points and badges, and see how you rank on the institution leaderboard.</p>
     </div>
-    <div class="col-md-4">
-        <h5>Mentorship Support</h5>
-        <p>Students and lecturers connect through structured wellness card sessions.</p>
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-5">
+        <span class="material-symbols-outlined text-tertiary text-[22px]">diversity_2</span>
+        <h3 class="text-sm font-semibold text-on-surface mt-2 mb-1">Mentorship Support</h3>
+        <p class="text-xs text-on-surface-variant">Students and lecturers connect through structured wellness card sessions.</p>
     </div>
 </div>

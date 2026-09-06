@@ -1,60 +1,81 @@
 @model DashboardViewModel
 @{ ViewData["Title"] = "Dashboard"; }
 
-<h2>Welcome, @Model.FullName</h2>
+<h1 class="text-2xl font-semibold tracking-tight text-on-surface mb-1">Good day, @Model.FullName.Split(' ')[0]</h1>
+<p class="text-sm text-on-surface-variant mb-6">Here is your wellness summary.</p>
 
 @if (TempData["BmiResult"] != null)
 {
-    <div class="alert alert-info">Latest BMI: @TempData["BmiResult"]</div>
+    <div class="bg-secondary-container/40 border border-secondary/30 text-on-secondary-container text-sm rounded-lg px-4 py-3 mb-4">
+        Latest BMI: @TempData["BmiResult"]
+    </div>
 }
 @if (TempData["NewBadges"] != null)
 {
-    <div class="alert alert-success">New badge(s) earned: @TempData["NewBadges"]</div>
+    <div class="bg-primary/10 border border-primary/20 text-primary text-sm rounded-lg px-4 py-3 mb-4">
+        New badge(s) earned: @TempData["NewBadges"]
+    </div>
 }
 
-<div class="row mb-4">
-    <div class="col-md-3">
-        <div class="card text-center p-3">
-            <h6>Points</h6>
-            <h3>@Model.TotalPoints</h3>
-        </div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-6 mb-4 text-center">
+    <p class="text-6xl font-bold text-primary">@Model.TotalPoints</p>
+    <p class="text-sm text-on-surface-variant mt-1">Wellness Points</p>
+</div>
+
+<div class="grid grid-cols-2 gap-3 mb-4">
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 text-center">
+        <span class="material-symbols-outlined text-primary text-[22px]">military_tech</span>
+        <p class="text-2xl font-bold mt-1">@Model.Badges.Count</p>
+        <p class="text-xs text-on-surface-variant uppercase tracking-wide">Badges</p>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center p-3">
-            <h6>Badges Earned</h6>
-            <h3>@Model.Badges.Count</h3>
-        </div>
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 text-center">
+        <span class="material-symbols-outlined text-tertiary text-[22px]">monitor_weight</span>
+        <p class="text-2xl font-bold mt-1">@(Model.LatestBmi != null ? Model.LatestBmi.Bmi.ToString("0.0") : "—")</p>
+        <p class="text-xs text-on-surface-variant uppercase tracking-wide">@(Model.LatestBmi?.Category ?? "No BMI yet")</p>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center p-3">
-            <h6>Latest BMI</h6>
-            <h3>@(Model.LatestBmi != null ? Model.LatestBmi.Bmi.ToString("0.0") : "—")</h3>
-            <small>@(Model.LatestBmi?.Category ?? "No entries yet")</small>
-        </div>
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 text-center">
+        <span class="material-symbols-outlined text-secondary text-[22px]">fact_check</span>
+        <p class="text-2xl font-bold mt-1">@Model.RecentLogs.Count</p>
+        <p class="text-xs text-on-surface-variant uppercase tracking-wide">Total Logs</p>
     </div>
-    <div class="col-md-3">
-        <div class="card text-center p-3">
-            <h6>Total Logs</h6>
-            <h3>@Model.RecentLogs.Count</h3>
-        </div>
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 text-center">
+        <span class="material-symbols-outlined text-primary text-[22px]">bolt</span>
+        <p class="text-2xl font-bold mt-1">@(Model.RecentLogs.Count > 0 ? "Active" : "—")</p>
+        <p class="text-xs text-on-surface-variant uppercase tracking-wide">Status</p>
     </div>
 </div>
 
 @if (Model.Badges.Any())
 {
-    <p><strong>Your badges:</strong> @string.Join(", ", Model.Badges)</p>
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-5 mb-4">
+        <h3 class="text-sm font-semibold text-on-surface mb-2">Your badges</h3>
+        <div class="flex flex-wrap gap-2">
+            @foreach (var badge in Model.Badges)
+            {
+                <span class="text-xs font-medium bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full">@badge</span>
+            }
+        </div>
+    </div>
 }
 
-@if (Model.RecentLogs.Count < 2)
-{
-    <div class="alert alert-warning">Log your wellness at least twice to see your trend chart.</div>
-}
-else
-{
-    <canvas id="trendChart" height="100"></canvas>
-}
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-5 mb-4">
+    <h3 class="text-sm font-semibold text-on-surface mb-3">Recent Trends</h3>
+    @if (Model.RecentLogs.Count < 2)
+    {
+        <div class="bg-surface-container-low text-on-surface-variant text-sm rounded-lg px-4 py-6 text-center">
+            Log your wellness at least twice to see your trend chart.
+        </div>
+    }
+    else
+    {
+        <canvas id="trendChart" height="180"></canvas>
+    }
+</div>
 
-<p class="mt-4"><a asp-action="Log" class="btn btn-primary">Log Wellness Now</a></p>
+<a asp-action="Log" class="block w-full h-12 bg-primary text-on-primary text-sm font-semibold rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition">
+    <span class="material-symbols-outlined text-[18px]">add_circle</span>
+    Log Wellness Now
+</a>
 
 @section Scripts {
     @if (Model.RecentLogs.Count >= 2)
@@ -70,12 +91,12 @@ else
                 data: {
                     labels: labels,
                     datasets: [
-                        { label: 'Stress', data: stress, borderColor: '#dc3545' },
-                        { label: 'Fatigue', data: fatigue, borderColor: '#fd7e14' },
-                        { label: 'Mental Health', data: mental, borderColor: '#198754' }
+                        { label: 'Stress', data: stress, borderColor: '#ba1a1a', tension: 0.4 },
+                        { label: 'Fatigue', data: fatigue, borderColor: '#f9a825', tension: 0.4 },
+                        { label: 'Mental Health', data: mental, borderColor: '#006e2c', tension: 0.4 }
                     ]
                 },
-                options: { scales: { y: { min: 0, max: 10 } } }
+                options: { scales: { y: { min: 0, max: 10 } }, plugins: { legend: { labels: { font: { family: 'Inter', size: 11 } } } } }
             });
         </script>
     }

@@ -96,3 +96,6 @@ This code was written and reviewed by hand but has not been compiled here
 Run `dotnet build` first thing after restoring packages — if anything
 doesn't compile, it'll most likely be a small namespace or package-version
 mismatch, easy to fix locally.
+
+
+// "DefaultConnection": "Host=localhost;Port=5432;Database=fpi_wellness;Username=postgres;Password=1234"

@@ -1,33 +1,66 @@
 @model WellnessLogViewModel
-@{ ViewData["Title"] = "Log Wellness"; }
+@{ ViewData["Title"] = "Daily Check-in"; }
 
-<h2>Log Your Wellness</h2>
-<div asp-validation-summary="All" class="text-danger"></div>
+<h1 class="text-2xl font-semibold tracking-tight text-on-surface mb-1">Daily Check-in</h1>
+<p class="text-sm text-on-surface-variant mb-6">Log today's wellness indicators.</p>
 
-<form asp-action="Log" method="post" class="col-md-6">
-    <div class="mb-3">
-        <label asp-for="StressScore" class="form-label">Stress (1–10)</label>
-        <input asp-for="StressScore" class="form-control" type="number" min="1" max="10" />
+<div asp-validation-summary="All" class="text-error text-sm mb-4"></div>
+
+<form asp-action="Log" method="post" class="flex flex-col gap-4">
+
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-6">
+        <div class="flex items-center justify-between mb-1">
+            <label asp-for="StressScore" class="text-base font-medium text-on-surface">How stressed are you?</label>
+            <span id="stressVal" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-sm font-semibold">@(Model.StressScore == 0 ? 5 : Model.StressScore)</span>
+        </div>
+        <input asp-for="StressScore" type="range" min="1" max="10" value="@(Model.StressScore == 0 ? 5 : Model.StressScore)" oninput="document.getElementById('stressVal').innerText=this.value"
+               class="w-full accent-primary mt-3" />
+        <div class="flex justify-between text-xs text-on-surface-variant mt-1"><span>Low (1)</span><span>High (10)</span></div>
     </div>
-    <div class="mb-3">
-        <label asp-for="FatigueScore" class="form-label">Fatigue (1–10)</label>
-        <input asp-for="FatigueScore" class="form-control" type="number" min="1" max="10" />
+
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-6">
+        <div class="flex items-center justify-between mb-1">
+            <label asp-for="FatigueScore" class="text-base font-medium text-on-surface">How fatigued do you feel?</label>
+            <span id="fatigueVal" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-sm font-semibold">@(Model.FatigueScore == 0 ? 5 : Model.FatigueScore)</span>
+        </div>
+        <input asp-for="FatigueScore" type="range" min="1" max="10" value="@(Model.FatigueScore == 0 ? 5 : Model.FatigueScore)" oninput="document.getElementById('fatigueVal').innerText=this.value"
+               class="w-full accent-primary mt-3" />
+        <div class="flex justify-between text-xs text-on-surface-variant mt-1"><span>Low (1)</span><span>High (10)</span></div>
     </div>
-    <div class="mb-3">
-        <label asp-for="ActivityMins" class="form-label">Physical Activity (minutes today)</label>
-        <input asp-for="ActivityMins" class="form-control" type="number" min="0" />
+
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-6">
+        <div class="flex items-center justify-between mb-1">
+            <label asp-for="MentalScore" class="text-base font-medium text-on-surface">How is your mental health?</label>
+            <span id="mentalVal" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-sm font-semibold">@(Model.MentalScore == 0 ? 5 : Model.MentalScore)</span>
+        </div>
+        <input asp-for="MentalScore" type="range" min="1" max="10" value="@(Model.MentalScore == 0 ? 5 : Model.MentalScore)" oninput="document.getElementById('mentalVal').innerText=this.value"
+               class="w-full accent-primary mt-3" />
+        <div class="flex justify-between text-xs text-on-surface-variant mt-1"><span>Poor (1)</span><span>Excellent (10)</span></div>
     </div>
-    <div class="mb-3">
-        <label asp-for="MentalScore" class="form-label">Mental Health (1–10)</label>
-        <input asp-for="MentalScore" class="form-control" type="number" min="1" max="10" />
+
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-6">
+        <label asp-for="ActivityMins" class="text-base font-medium text-on-surface">Physical activity today</label>
+        <div class="relative mt-3">
+            <span class="material-symbols-outlined text-[20px] text-outline absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">directions_run</span>
+            <input asp-for="ActivityMins" type="number" min="0" placeholder="Minutes" class="w-full h-12 pl-10 pr-3.5 bg-surface-container-low border border-outline-variant rounded-xl text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
+        </div>
     </div>
-    <div class="mb-3">
-        <label asp-for="HeightM" class="form-label">Height (metres)</label>
-        <input asp-for="HeightM" class="form-control" type="number" step="0.01" />
+
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-6">
+        <label class="text-base font-medium text-on-surface">Height &amp; weight (for BMI)</label>
+        <div class="grid grid-cols-2 gap-3 mt-3">
+            <div class="relative">
+                <span class="material-symbols-outlined text-[20px] text-outline absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">height</span>
+                <input asp-for="HeightM" type="number" step="0.01" placeholder="Height (m)" class="w-full h-12 pl-10 pr-3.5 bg-surface-container-low border border-outline-variant rounded-xl text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
+            </div>
+            <div class="relative">
+                <span class="material-symbols-outlined text-[20px] text-outline absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">monitor_weight</span>
+                <input asp-for="WeightKg" type="number" step="0.1" placeholder="Weight (kg)" class="w-full h-12 pl-10 pr-3.5 bg-surface-container-low border border-outline-variant rounded-xl text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
+            </div>
+        </div>
     </div>
-    <div class="mb-3">
-        <label asp-for="WeightKg" class="form-label">Weight (kg)</label>
-        <input asp-for="WeightKg" class="form-control" type="number" step="0.1" />
-    </div>
-    <button type="submit" class="btn btn-primary">Submit Log</button>
+
+    <button type="submit" class="w-full h-12 mt-2 bg-primary text-on-primary text-sm font-semibold rounded-xl hover:opacity-90 transition shadow-sm">
+        Save check-in
+    </button>
 </form>

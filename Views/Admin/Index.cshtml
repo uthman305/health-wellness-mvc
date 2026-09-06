@@ -1,24 +1,47 @@
 @model AdminDashboardViewModel
 @{ ViewData["Title"] = "Admin Dashboard"; }
 
-<h2>Institution Wellness Overview</h2>
-<p class="text-muted">Aggregate, anonymised data only — no individual user records shown.</p>
+<h1 class="text-2xl font-semibold tracking-tight text-on-surface mb-1">Institution Overview</h1>
+<p class="text-sm text-on-surface-variant mb-6">Aggregate, anonymised data only — no individual records shown.</p>
 
-<div class="row g-3 mb-4">
-    <div class="col-md-3"><div class="card p-3 text-center"><h6>Total Users</h6><h3>@Model.TotalUsers</h3></div></div>
-    <div class="col-md-3"><div class="card p-3 text-center"><h6>Students</h6><h3>@Model.TotalStudents</h3></div></div>
-    <div class="col-md-3"><div class="card p-3 text-center"><h6>Lecturers</h6><h3>@Model.TotalLecturers</h3></div></div>
-    <div class="col-md-3"><div class="card p-3 text-center"><h6>Active Today</h6><h3>@Model.DailyActiveUsers</h3></div></div>
+<div class="grid grid-cols-2 gap-3 mb-4">
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 text-center">
+        <p class="text-2xl font-bold text-on-surface">@Model.TotalUsers</p>
+        <p class="text-xs text-on-surface-variant uppercase tracking-wide mt-1">Total Users</p>
+    </div>
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 text-center">
+        <p class="text-2xl font-bold text-on-surface">@Model.DailyActiveUsers</p>
+        <p class="text-xs text-on-surface-variant uppercase tracking-wide mt-1">Active Today</p>
+    </div>
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 text-center">
+        <p class="text-2xl font-bold text-on-surface">@Model.TotalStudents</p>
+        <p class="text-xs text-on-surface-variant uppercase tracking-wide mt-1">Students</p>
+    </div>
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 text-center">
+        <p class="text-2xl font-bold text-on-surface">@Model.TotalLecturers</p>
+        <p class="text-xs text-on-surface-variant uppercase tracking-wide mt-1">Lecturers</p>
+    </div>
 </div>
 
-<div class="row g-3 mb-4">
-    <div class="col-md-4"><div class="card p-3 text-center"><h6>Avg. Stress</h6><h3>@Model.AverageStress.ToString("0.0")</h3></div></div>
-    <div class="col-md-4"><div class="card p-3 text-center"><h6>Avg. Fatigue</h6><h3>@Model.AverageFatigue.ToString("0.0")</h3></div></div>
-    <div class="col-md-4"><div class="card p-3 text-center"><h6>Avg. Mental Health</h6><h3>@Model.AverageMentalScore.ToString("0.0")</h3></div></div>
+<div class="grid grid-cols-3 gap-3 mb-4">
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 text-center">
+        <p class="text-xl font-bold text-error">@Model.AverageStress.ToString("0.0")</p>
+        <p class="text-xs text-on-surface-variant mt-1">Avg. Stress</p>
+    </div>
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 text-center">
+        <p class="text-xl font-bold text-on-surface">@Model.AverageFatigue.ToString("0.0")</p>
+        <p class="text-xs text-on-surface-variant mt-1">Avg. Fatigue</p>
+    </div>
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-4 text-center">
+        <p class="text-xl font-bold text-secondary">@Model.AverageMentalScore.ToString("0.0")</p>
+        <p class="text-xs text-on-surface-variant mt-1">Avg. Mental</p>
+    </div>
 </div>
 
-<h4>BMI Distribution</h4>
-<canvas id="bmiChart" height="80"></canvas>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-5">
+    <h3 class="text-sm font-semibold text-on-surface mb-3">BMI Distribution</h3>
+    <canvas id="bmiChart" height="140"></canvas>
+</div>
 
 @section Scripts {
     <script>
@@ -29,9 +52,11 @@
                 datasets: [{
                     label: 'Users',
                     data: [@Model.UnderweightCount, @Model.NormalCount, @Model.OverweightCount, @Model.ObeseCount],
-                    backgroundColor: ['#0dcaf0', '#198754', '#fd7e14', '#dc3545']
+                    backgroundColor: ['#1a73e8', '#006e2c', '#f9a825', '#ba1a1a'],
+                    borderRadius: 6
                 }]
-            }
+            },
+            options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
         });
     </script>
 }
