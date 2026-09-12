@@ -7,6 +7,15 @@ public class RegisterViewModel
     [Required]
     public string FullName { get; set; } = string.Empty;
 
+    [Required]
+    public string MatricNumber { get; set; } = string.Empty;
+
+    [Required]
+    public string Department { get; set; } = string.Empty;
+
+    [Required]
+    public string College { get; set; } = string.Empty;
+
     [Required, EmailAddress]
     public string Email { get; set; } = string.Empty;
 
@@ -57,6 +66,8 @@ public class DashboardViewModel
     public List<string> Badges { get; set; } = new();
     public List<WellnessLog> RecentLogs { get; set; } = new();
     public BmiRecord? LatestBmi { get; set; }
+    public string RiskLevel { get; set; } = "Low";
+    public List<string> RiskFactors { get; set; } = new();
 }
 
 public class LeaderboardRowViewModel
@@ -101,4 +112,9 @@ public class AdminDashboardViewModel
     public int OverweightCount { get; set; }
     public int ObeseCount { get; set; }
     public int DailyActiveUsers { get; set; }
+    public int LowRiskCount { get; set; }
+    public int ModerateRiskCount { get; set; }
+    public int HighRiskCount { get; set; }
+    public List<string> TrendLabels { get; set; } = new();
+    public List<double> TrendValues { get; set; } = new();
 }

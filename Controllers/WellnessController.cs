@@ -16,17 +16,20 @@ public class WellnessController : Controller
     private readonly ApplicationDbContext _db;
     private readonly BmiService _bmiService;
     private readonly GamificationService _gamification;
+    private readonly PredictiveAnalyticsService _analytics;
     private readonly UserManager<ApplicationUser> _userManager;
 
     public WellnessController(
         ApplicationDbContext db,
         BmiService bmiService,
         GamificationService gamification,
+        PredictiveAnalyticsService analytics,
         UserManager<ApplicationUser> userManager)
     {
         _db = db;
         _bmiService = bmiService;
         _gamification = gamification;
+        _analytics = analytics;
         _userManager = userManager;
     }
 
@@ -55,13 +58,17 @@ public class WellnessController : Controller
             .OrderByDescending(b => b.CreatedAt)
             .FirstOrDefaultAsync();
 
+        var risk = await _analytics.ComputeUserRiskAsync(user.Id);
+
         var vm = new DashboardViewModel
         {
             FullName = user.FullName,
             TotalPoints = points?.Total ?? 0,
             Badges = badges,
             RecentLogs = recentLogs.OrderBy(l => l.CreatedAt).ToList(), // chronological for charting
-            LatestBmi = latestBmi
+            LatestBmi = latestBmi,
+            RiskLevel = risk.Level.ToString(),
+            RiskFactors = risk.Factors
         };
 
         return View(vm);

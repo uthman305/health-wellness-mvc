@@ -39,7 +39,10 @@ public class AccountController : Controller
         {
             UserName = model.Email,
             Email = model.Email,
-            FullName = model.FullName
+            FullName = model.FullName,
+            MatricNumber = model.MatricNumber,
+            Department = model.Department,
+            College = model.College
         };
 
         var result = await _userManager.CreateAsync(user, model.Password);

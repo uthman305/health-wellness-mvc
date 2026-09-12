@@ -58,6 +58,40 @@
     </div>
 }
 
+@{
+    var riskColor = Model.RiskLevel switch
+    {
+        "High" => "bg-error-container/40 border-error/30 text-on-error-container",
+        "Moderate" => "bg-amber-100 border-amber-300 text-amber-800",
+        _ => "bg-secondary-container/40 border-secondary/30 text-on-secondary-container"
+    };
+    var riskIcon = Model.RiskLevel switch
+    {
+        "High" => "warning",
+        "Moderate" => "info",
+        _ => "check_circle"
+    };
+}
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-5 mb-4">
+    <div class="flex items-center justify-between mb-3">
+        <h3 class="text-sm font-semibold text-on-surface">Predictive Health Risk</h3>
+        <span class="text-xs px-3 py-1 rounded-full border font-semibold @riskColor flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px]">@riskIcon</span>
+            @Model.RiskLevel Risk
+        </span>
+    </div>
+    <ul class="flex flex-col gap-1.5">
+        @foreach (var factor in Model.RiskFactors)
+        {
+            <li class="text-xs text-on-surface-variant flex items-start gap-1.5">
+                <span class="material-symbols-outlined text-[14px] mt-0.5">chevron_right</span>
+                @factor
+            </li>
+        }
+    </ul>
+    <p class="text-[11px] text-on-surface-variant/70 mt-3 italic">Based on trends in your last several check-ins — not a medical diagnosis.</p>
+</div>
+
 <div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-5 mb-4">
     <h3 class="text-sm font-semibold text-on-surface mb-3">Recent Trends</h3>
     @if (Model.RecentLogs.Count < 2)

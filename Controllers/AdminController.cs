@@ -1,5 +1,6 @@
 using HealthWellnessMVC.Data;
 using HealthWellnessMVC.Models.ViewModels;
+using HealthWellnessMVC.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,13 @@ public class AdminController : Controller
 {
     private readonly ApplicationDbContext _db;
     private readonly UserManager<Models.ApplicationUser> _userManager;
+    private readonly PredictiveAnalyticsService _analytics;
 
-    public AdminController(ApplicationDbContext db, UserManager<Models.ApplicationUser> userManager)
+    public AdminController(ApplicationDbContext db, UserManager<Models.ApplicationUser> userManager, PredictiveAnalyticsService analytics)
     {
         _db = db;
         _userManager = userManager;
+        _analytics = analytics;
     }
 
     [HttpGet]
@@ -28,6 +31,9 @@ public class AdminController : Controller
 
         var logs = _db.WellnessLogs.AsQueryable();
         var bmiRecords = _db.BmiRecords.AsQueryable();
+
+        var allUserIds = students.Select(s => s.Id).Concat(lecturers.Select(l => l.Id));
+        var riskSummary = await _analytics.ComputePopulationRiskAsync(allUserIds);
 
         var vm = new AdminDashboardViewModel
         {
@@ -45,7 +51,12 @@ public class AdminController : Controller
                 .Where(l => l.CreatedAt.Date == DateTime.UtcNow.Date)
                 .Select(l => l.UserId)
                 .Distinct()
-                .CountAsync()
+                .CountAsync(),
+            LowRiskCount = riskSummary.LowCount,
+            ModerateRiskCount = riskSummary.ModerateCount,
+            HighRiskCount = riskSummary.HighCount,
+            TrendLabels = riskSummary.StressTrend.Select(t => t.Label).ToList(),
+            TrendValues = riskSummary.StressTrend.Select(t => t.AvgStress).ToList()
         };
 
         return View(vm);

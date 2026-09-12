@@ -27,6 +27,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddScoped<BmiService>();
 builder.Services.AddScoped<GamificationService>();
+builder.Services.AddScoped<PredictiveAnalyticsService>();
 
 builder.Services.AddControllersWithViews();
 
