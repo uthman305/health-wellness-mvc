@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@ViewData["Title"] - FPI Wellness</title>
+    <title>@ViewData["Title"] - FUTI Wellness</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1" rel="stylesheet" />
@@ -46,13 +46,10 @@
 </head>
 <body class="bg-background text-on-surface antialiased min-h-full pb-20">
 
-    <header class="bg-surface-container-lowest border-b border-outline-variant/60 sticky top-0 z-20">
+   <header class="bg-surface-container-lowest border-b border-outline-variant/60 sticky top-0 z-20">
         <div class="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
-            <a asp-controller="Home" asp-action="Index" class="flex items-center gap-2">
-                <span class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white">
-                    <span class="material-symbols-outlined text-[18px]">favorite</span>
-                </span>
-                <span class="font-semibold tracking-tight text-on-surface">FPI Wellness</span>
+            <a asp-controller="Home" asp-action="Index" class="flex items-center">
+                <img src="~/images/logo.jpg" alt="FUTI Wellness" class="h-8 w-auto" />
             </a>
             @if (User.Identity != null && User.Identity.IsAuthenticated)
             {
